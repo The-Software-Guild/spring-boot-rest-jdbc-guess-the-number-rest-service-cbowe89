@@ -9,8 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApplicationConfiguration.class)
 public class RoundDatabaseDaoTest {
+    @Qualifier("gameDatabaseDao")
+    @Autowired
+    GameDao gameDao;
+
     @Autowired
     RoundDao roundDao;
 
-    @Autowired
-    GameDao gameDao;
-    public RoundDatabaseDaoTest ()
-    {
-
+    public RoundDatabaseDaoTest () {
     }
 
     @BeforeEach
@@ -87,6 +87,25 @@ public class RoundDatabaseDaoTest {
 
     @Test
     public void testGetAllOfGame() {
-        //implement
+        GameService gameService = new GameService();
+        Game game = gameService.newGame();
+        gameDao.add(game);
+
+        Game game2 = gameService.newGame();
+        gameDao.add(game2);
+
+        Round round = new Round();
+        round.setGuess("1111");
+        round.setGameId(game.getGameId());
+
+        Round round2 = new Round();
+        round2.setGuess("2222");
+        round2.setGameId(game2.getGameId());
+
+        roundDao.add(round);
+        roundDao.add(round2);
+
+        List<Game> games = gameDao.getAll();
+        assertEquals(2, games.size());
     }
 }

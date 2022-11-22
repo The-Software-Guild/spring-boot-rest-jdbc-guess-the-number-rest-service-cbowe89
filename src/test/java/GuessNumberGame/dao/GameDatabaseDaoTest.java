@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApplicationConfiguration.class)
 public class GameDatabaseDaoTest {
+    @Qualifier("gameDatabaseDao")
     @Autowired
     GameDao gameDao;
 
@@ -27,7 +29,6 @@ public class GameDatabaseDaoTest {
     RoundDao roundDao;
 
     public GameDatabaseDaoTest() {
-
     }
 
     @BeforeEach
@@ -57,9 +58,17 @@ public class GameDatabaseDaoTest {
 
     @Test
     public void testGetAll() {
-        //implement
-    }
+        // No games should exist to begin
+        assertEquals(0, gameDao.getAll().size());
 
+        // adds new game using dao
+        GameService gameService = new GameService();
+        Game game = gameService.newGame();
+        gameDao.add(game);
+
+        // 1 game should now exist
+        assertEquals(1, gameDao.getAll().size());
+    }
 
     @Test
     public void testUpdate() {
@@ -74,6 +83,19 @@ public class GameDatabaseDaoTest {
 
     @Test
     public void testDeleteById() {
-        //implement
+        // adds new game using dao
+        GameService gameService = new GameService();
+        Game game = gameService.newGame();
+        gameDao.add(game);
+
+        List<Game> games = gameDao.getAll();
+
+        assertTrue(games.contains(game));
+
+        gameDao.deleteById(game.getGameId());
+
+        Game fromDao = gameDao.findById(game.getGameId());
+
+        assertNull(fromDao);
     }
 }
