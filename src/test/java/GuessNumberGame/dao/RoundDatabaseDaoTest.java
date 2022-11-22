@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,15 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApplicationConfiguration.class)
 public class RoundDatabaseDaoTest {
-    @Qualifier("gameDatabaseDao")
     @Autowired
     GameDao gameDao;
 
     @Autowired
     RoundDao roundDao;
 
-    public RoundDatabaseDaoTest () {
-    }
+    public RoundDatabaseDaoTest () {}
 
     @BeforeEach
     public void setUp() {
@@ -90,9 +87,10 @@ public class RoundDatabaseDaoTest {
         GameService gameService = new GameService();
         Game game = gameService.newGame();
         gameDao.add(game);
-
         Game game2 = gameService.newGame();
         gameDao.add(game2);
+
+        List<Game> games = gameDao.getAll();
 
         Round round = new Round();
         round.setGuess("1111");
@@ -100,12 +98,20 @@ public class RoundDatabaseDaoTest {
 
         Round round2 = new Round();
         round2.setGuess("2222");
-        round2.setGameId(game2.getGameId());
+        round2.setGameId(game.getGameId());
+
+        Round round3 = new Round();
+        round3.setGuess("3333");
+        round3.setGameId(game2.getGameId());
 
         roundDao.add(round);
         roundDao.add(round2);
+        roundDao.add(round3);
 
-        List<Game> games = gameDao.getAll();
-        assertEquals(2, games.size());
+        List<Round> rounds = roundDao.getAllOfGame(game.getGameId());
+
+        assertEquals(2, rounds.size());
+        assertTrue(rounds.contains(round));
+        assertFalse(rounds.contains(round3));
     }
 }

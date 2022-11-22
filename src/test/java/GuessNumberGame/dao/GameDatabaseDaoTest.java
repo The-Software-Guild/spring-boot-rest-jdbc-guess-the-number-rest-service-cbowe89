@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,15 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApplicationConfiguration.class)
 public class GameDatabaseDaoTest {
-    @Qualifier("gameDatabaseDao")
     @Autowired
     GameDao gameDao;
 
     @Autowired
     RoundDao roundDao;
 
-    public GameDatabaseDaoTest() {
-    }
+    public GameDatabaseDaoTest() {}
 
     @BeforeEach
     public void setUp() {
@@ -43,7 +40,6 @@ public class GameDatabaseDaoTest {
             gameDao.deleteById(game.getGameId());
         }
     }
-
 
     @Test
     public void testAddGetGames() {
@@ -64,10 +60,16 @@ public class GameDatabaseDaoTest {
         // adds new game using dao
         GameService gameService = new GameService();
         Game game = gameService.newGame();
+        Game game2 = gameService.newGame();
         gameDao.add(game);
+        gameDao.add(game2);
+
+        List<Game> games = gameDao.getAll();
 
         // 1 game should now exist
-        assertEquals(1, gameDao.getAll().size());
+        assertEquals(2, games.size());
+        assertTrue(games.contains(game));
+        assertTrue(games.contains(game2));
     }
 
     @Test
@@ -86,16 +88,13 @@ public class GameDatabaseDaoTest {
         // adds new game using dao
         GameService gameService = new GameService();
         Game game = gameService.newGame();
+        Game game2 = gameService.newGame();
         gameDao.add(game);
-
-        List<Game> games = gameDao.getAll();
-
-        assertTrue(games.contains(game));
+        gameDao.add(game2);
 
         gameDao.deleteById(game.getGameId());
 
-        Game fromDao = gameDao.findById(game.getGameId());
-
-        assertNull(fromDao);
+        List<Game> games = gameDao.getAll();
+        assertEquals(1, games.size());
     }
 }
