@@ -13,9 +13,9 @@ public interface RoundDao {
 
     Round findById(int id);
 
-    // true if item exists and is updated
+    // True if Round exists and is Updated in the database
     boolean update(Round round);
 
-    // true if item exists and is deleted
+    // True if Round exists and is Deleted from the database
     boolean deleteById(int id);
 }
