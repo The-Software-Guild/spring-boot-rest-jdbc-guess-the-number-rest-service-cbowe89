@@ -27,7 +27,7 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public Game add(Game game) {
-        final String sql = "INSERT INTO Game(answer, isFinished) VALUES(?,?);";
+        final String sql = "INSERT INTO games(answer, isFinished) VALUES(?,?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update((Connection conn) -> {
@@ -49,14 +49,14 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public List<Game> getAll() {
-        final String sql = "SELECT game_id, answer, isFinished FROM games;";
+        final String sql = "SELECT id, answer, isFinished FROM games";
         return jdbcTemplate.query(sql, new GameMapper());
     }
 
     @Override
     public Game findById(int game_id) {
-        final String sql = "SELECT game_id, answer, isFinished FROM games "
-                + "WHERE id = ?;";
+        final String sql = "SELECT id, answer, isFinished FROM games "
+                + "WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, new GameMapper(), game_id);
     }
 
@@ -65,7 +65,7 @@ public class GameDatabaseDao implements GameDao {
         final String sql = "UPDATE games SET "
                 + "answer = ?, "
                 + "isFinished = ? "
-                + "WHERE id = ?;";
+                + "WHERE id = ?";
         return jdbcTemplate.update(sql,
                 game.getAnswer(),
                 game.getIsFinished(),
@@ -74,7 +74,7 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public boolean deleteById(int game_id) {
-        final String sql = "DELETE FROM games WHERE game_id = ?;";
+        final String sql = "DELETE FROM games WHERE id = ?";
         return jdbcTemplate.update(sql, game_id) > 0;
     }
 
@@ -83,7 +83,7 @@ public class GameDatabaseDao implements GameDao {
         @Override
         public Game mapRow(ResultSet rs, int index) throws SQLException {
             Game game = new Game();
-            game.setGameId(rs.getInt("game_id"));
+            game.setGameId(rs.getInt("id"));
             game.setAnswer(rs.getString("answer"));
             game.setIsFinished(rs.getBoolean("isFinished"));
             return game;

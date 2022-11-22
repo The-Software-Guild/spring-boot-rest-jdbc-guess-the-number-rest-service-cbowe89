@@ -27,7 +27,6 @@ public class GameService {
         return game;
     }
 
-
     public Game getGames(Game game) {
         if (!game.getIsFinished()) {
             game.setAnswer("****");

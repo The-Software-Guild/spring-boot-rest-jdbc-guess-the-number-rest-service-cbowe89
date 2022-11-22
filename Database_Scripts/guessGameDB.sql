@@ -13,13 +13,11 @@ CREATE TABLE Rounds (
     gameID int,
     Timestamp timeStamp,
     guess varchar(10),
-    guessResult VarcHAR(8)
-);
-
-ALTER TABLE Rounds
-    ADD CONSTRAINT fk_round_game
+    guessResult VarcHAR(8),
+    CONSTRAINT fk_round_game
         FOREIGN KEY (gameID)
-        REFERENCES Game(id);
+        REFERENCES Games(id)
+);
 
 DROP DATABASE IF EXISTS guessGame_tests;
 CREATE DATABASE guessGame_tests;
@@ -36,10 +34,8 @@ CREATE TABLE Rounds(
     gameID int,
     Timestamp timeStamp,
     guess varchar(10),
-    guessResult VarcHAR(8)
-);
-
-ALTER TABLE Rounds
-    ADD CONSTRAINT fk_round_game
+    guessResult VarcHAR(8),
+    CONSTRAINT fk_round_game
         FOREIGN KEY (gameID)
-        REFERENCES Game(id);
+        REFERENCES Games(id)
+);

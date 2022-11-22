@@ -5,9 +5,6 @@ import GuessNumberGame.model.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
-@Repository
 public class GameInMemoryDao implements GameDao {
     private static final List<Game> games = new ArrayList<>();
 

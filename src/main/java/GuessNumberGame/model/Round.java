@@ -4,34 +4,34 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Round {
-    private int round_id;
-    int game_id;
-    Timestamp guess_time;
+    private int id;
+    int gameId;
+    Timestamp timestamp;
     String guess;
     String result;
 
     public int getId() {
-        return round_id;
+        return id;
     }
 
-    public void setId(int round_id) {
-        this.round_id = round_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getGameId() {
-        return game_id;
+        return gameId;
     }
 
-    public void setGameId(int game_id) {
-        this.game_id = game_id;
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public Timestamp getTimeStamp() {
-        return guess_time;
+        return timestamp;
     }
 
     public void setTimeStamp(Timestamp timeStamp) {
-        this.guess_time = timeStamp;
+        this.timestamp = timeStamp;
     }
 
     public String getGuess() {
@@ -55,15 +55,15 @@ public class Round {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Round round = (Round) o;
-        return round_id == round.round_id
-                && game_id == round.game_id
-                && Objects.equals(guess_time, round.guess_time)
+        return id == round.id
+                && gameId == round.gameId
+                && Objects.equals(timestamp, round.timestamp)
                 && Objects.equals(guess, round.guess)
                 && Objects.equals(result, round.result);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(round_id, game_id, guess_time, guess, result);
+        return Objects.hash(id, gameId, timestamp, guess, result);
     }
 }

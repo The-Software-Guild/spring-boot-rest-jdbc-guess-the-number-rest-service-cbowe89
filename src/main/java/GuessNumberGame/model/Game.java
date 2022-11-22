@@ -3,16 +3,16 @@ package GuessNumberGame.model;
 import java.util.Objects;
 
 public class Game {
-    private int game_id;
+    private int id;
     private String answer;
     private boolean isFinished;
 
     public int getGameId() {
-        return game_id;
+        return id;
     }
 
-    public void setGameId(int game_id) {
-        this.game_id = game_id;
+    public void setGameId(int id) {
+        this.id = id;
     }
 
     public String getAnswer() {
@@ -44,13 +44,13 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return game_id == game.game_id
+        return id == game.id
                 && isFinished == game.isFinished
                 && Objects.equals(answer, game.answer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(game_id, answer, isFinished);
+        return Objects.hash(id, answer, isFinished);
     }
 }
